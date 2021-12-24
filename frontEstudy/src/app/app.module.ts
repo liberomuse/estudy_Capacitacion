@@ -12,24 +12,38 @@ import { AppComponent } from './app.component';
 //import { CoreModule } from './core/core.module';
 //import { SharedModule } from './shared/shared.module';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { AlertComponent } from './_components';
+import { HomeComponent } from './home';
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AlertComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
-    // IMPORTAMOS EL CORE
+    ReactiveFormsModule,
+    HttpClientModule,
+    AppRoutingModule
 //    CoreModule,
 //    SharedModule,
-    AppRoutingModule
   ],
   providers: [
     {
-      provide: LocationStrategy,
-      useClass: PathLocationStrategy
-    }
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi:true
+    },
+
+    fakeBackendProvider
    ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { };
